@@ -3,7 +3,7 @@
 
 
 
-## Q.1 Write Query to get the Customer with the highest total order value for each year-month.
+## Q.1 Write Query to get the Customer with the highest total order value for each year-month?
 
 Result should include the columns year, month, customerid, total_monhtly_order_value.
 Output should be ordered by year and month in ascending order.
@@ -20,7 +20,7 @@ Note: In case there are 2 customer with quale highest total order value, return 
 ![image](https://user-images.githubusercontent.com/50954720/213549948-6d890dc9-0cb0-48ae-b0e2-8b8d16d124c2.png)
 
 
-## Q.2 Write query to get median for each month-year.
+## Q.2 Write query to get median for each month-year?
 Traffic on a Website was recorded on multiple days over 2 years, 2017-2018. Create a Query that, for each month, will return a row with the month number,meadian for that month in 2017, in 2018. Order the result by month. 
 
 ### traffic table
