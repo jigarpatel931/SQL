@@ -59,6 +59,9 @@ VALUES
  dbo.Orders_details
  group by OrderID;
  
+  /*Q.1*/
+  
+  /* find total_value for each order. */
  with abc (orderid,totalvalue)as
  (
  select OrderID, sum(unitprice*quantity) from 
@@ -66,6 +69,7 @@ VALUES
  group by OrderID
  )
 , 
+/* find total_value for each customer for each month-year. */
  abc1 (customerid,year1,month1,totalvalue)as
  (select Orders.CustomerID, year(Orders.OrderDate),month(Orders.OrderDate),sum(abc.totalvalue) from
  dbo.Orders
@@ -75,12 +79,14 @@ VALUES
  dbo.Orders.OrderID=abc.orderid
  group by Orders.CustomerID,year(Orders.OrderDate),month(Orders.OrderDate) )
  ,
+ /* find max total_value for each customer for each month-year. */
 OrderValue as(
  select year1 as year2,month1 as month2,max(abc1.totalvalue) as totaval,customerid
  from abc1
  group by (abc1.year1),(abc1.month1),abc1.customerid)
 
 ,
+/* Customer with the highest total order value for each year-month */
 ordervalue1 (customerid,year,month,totalvalue,rank1)as
 (
  SELECT 
@@ -96,10 +102,10 @@ select ordervalue1.customerid, ordervalue1.year,ordervalue1.month,ordervalue1.to
 from ordervalue1 
 WHERE ordervalue1.rank1=1
 order by ordervalue1.year,ordervalue1.month;
+/* Customer with the highest total order value for each year-month */
 
 
-
-//Q.2//
+/*Q.2*/
 
 CREATE TABLE traffic (
 id INT primary key,
@@ -136,7 +142,12 @@ VALUES
 VALUES 
  (8151,'2017-03-14',7140);
  select * from traffic;
- WITH DataByMonth AS (
+
+
+
+
+/*Solution: This part will get month,year,count, row_num for each month-year, total rows for each-month*/
+WITH DataByMonth AS (
     SELECT 
         DATEPART(month, recordday) as month,
         DATEPART(year, recordday) as year,
@@ -146,6 +157,8 @@ VALUES
     FROM traffic
     WHERE DATEPART(year, recordday) IN (2017, 2018)
 )
+/*second part will get month,year in cloumns, find median value for each month-year using 
+where condition applied on row_num and total_rows*/
 SELECT 
     DataByMonth.month,
     AVG(CASE WHEN DataByMonth.year = 2017 THEN DataByMonth.count END) as median_2017,
