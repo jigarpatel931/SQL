@@ -84,3 +84,39 @@ where order_date<members.join_date
   
 </details>
 
+
+:three: Advaced SQL: [Advanced SQL](https://github.com/jigarpatel931/SQL/tree/main/Advanced_SQL)
+
+<details>
+  <summary>Functions, clauses, statements used</summary>
+  
+  ### List
+  1. Create statement/procedures 
+  2. Joins
+  3. Subquries & CTE & Case statement
+  4. Group by & Order by
+  5. Aggregrate & Ranking windows functions such as row_number(),  rank()
+  6. Find Median
+  
+  ### Example Query
+  ```js
+  SELECT 
+    DataByMonth.month,
+    AVG(CASE WHEN DataByMonth.year = 2017 THEN DataByMonth.count END) as median_2017,
+    AVG(CASE WHEN DataByMonth.year = 2018 THEN DataByMonth.count END) as median_2018
+FROM DataByMonth
+WHERE (DataByMonth.row_num - 1) * 2 <= DataByMonth.total_rows AND DataByMonth.row_num * 2 >= DataByMonth.total_rows
+GROUP BY DataByMonth.month
+ORDER BY DataByMonth.month
+  }
+  ```
+</details>
+
+<details>
+  <summary>Questions</summary>
+  
+  ### List
+  	1. Write Query to get the Customer with the highest total order value for each year-month?
+	2. Write query to get median for each month-year?
+	  
+</details>
