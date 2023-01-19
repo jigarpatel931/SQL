@@ -20,8 +20,8 @@ Note: In case there are 2 customer with quale highest total order value, return 
 ![image](https://user-images.githubusercontent.com/50954720/213549948-6d890dc9-0cb0-48ae-b0e2-8b8d16d124c2.png)
 
 
-## Q.2 Traffic on a Website was recorded on multiple days over 2 years, 2017-2018.
-Create a Query that, for each month, will return a row with the month number,meadian for that month in 2017, in 2018. Order the result by month. 
+## Q.2 Write query to get median for each month-year.
+Traffic on a Website was recorded on multiple days over 2 years, 2017-2018. Create a Query that, for each month, will return a row with the month number,meadian for that month in 2017, in 2018. Order the result by month. 
 
 ### traffic table
 ![image](https://user-images.githubusercontent.com/50954720/213551519-916cdb05-658e-4502-8d04-f51e99eb3c9b.png)
