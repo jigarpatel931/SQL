@@ -17,9 +17,55 @@ Note: In case there are 2 customer with quale highest total order value, return 
 ![image](https://user-images.githubusercontent.com/50954720/213548338-6ea30e69-1622-4543-9869-d807754964b2.png)
 
 ### ANSWER
-![image](https://user-images.githubusercontent.com/50954720/213549948-6d890dc9-0cb0-48ae-b0e2-8b8d16d124c2.png)
 
+Query:
+```
+ /* find total_value for each order. */
+ with abc (orderid,totalvalue)as
+ (
+ select OrderID, sum(unitprice*quantity) from 
+ dbo.Orders_details
+ group by OrderID
+ )
+, 
+/* find total_value for each customer for each month-year. */
+ abc1 (customerid,year1,month1,totalvalue)as
+ (select Orders.CustomerID, year(Orders.OrderDate),month(Orders.OrderDate),sum(abc.totalvalue) from
+ dbo.Orders
+ join
+ abc
+ on
+ dbo.Orders.OrderID=abc.orderid
+ group by Orders.CustomerID,year(Orders.OrderDate),month(Orders.OrderDate) )
+ ,
+ /* find max total_value for each customer for each month-year. */
+OrderValue as(
+ select year1 as year2,month1 as month2,max(abc1.totalvalue) as totaval,customerid
+ from abc1
+ group by (abc1.year1),(abc1.month1),abc1.customerid)
 
+,
+/* Customer with the highest total order value for each year-month */
+ordervalue1 (customerid,year,month,totalvalue,rank1)as
+(
+ SELECT 
+    OrderValue.customerid,
+    OrderValue.year2,
+    OrderValue.month2,
+    OrderValue.totaval,
+	ROW_NUMBER() OVER(PARTITION BY OrderValue.year2, OrderValue.month2 ORDER BY OrderValue.totaval DESC, OrderValue.customerid ASC) 
+FROM OrderValue
+)
+
+select ordervalue1.customerid, ordervalue1.year,ordervalue1.month,ordervalue1.totalvalue 
+from ordervalue1 
+WHERE ordervalue1.rank1=1
+order by ordervalue1.year,ordervalue1.month;
+
+```
+ ![image](https://user-images.githubusercontent.com/50954720/213549948-6d890dc9-0cb0-48ae-b0e2-8b8d16d124c2.png)
+ 
+ 
 ## Q.2 Write query to get median for each month-year?
 Traffic on a Website was recorded on multiple days over 2 years, 2017-2018. Create a Query that, for each month, will return a row with the month number,meadian for that month in 2017, in 2018. Order the result by month. 
 
