@@ -17,6 +17,17 @@ Note: In case there are 2 customer with quale highest total order value, return 
 ![image](https://user-images.githubusercontent.com/50954720/213548338-6ea30e69-1622-4543-9869-d807754964b2.png)
 
 ### ANSWER
+<details>
+  <summary>Functions, clauses, statements used</summary>
+  
+  ### List
+  1. Create statement/procedures 
+  2. Date()
+  3. Joins
+  4. Subquries & CTE
+  5. Group by
+  6. Aggregrate windows functions
+</details>
 
 Query:
 ```
@@ -78,6 +89,45 @@ Traffic on a Website was recorded on multiple days over 2 years, 2017-2018. Crea
 step1. ![image](https://user-images.githubusercontent.com/50954720/213552270-f7b6d6f5-796a-4dbc-94e6-eea43ccbe31c.png)
 
 ### Result
+
+<details>
+  <summary>Functions, clauses, statements used</summary>
+  
+  ### List
+  1. Create statement/procedures 
+  2. DATEPART()
+  3. Joins
+  4. Subquries & CTE
+  5. Group by
+  6. Aggregrate windows functions, ROW_NUMBER
+</details>
+
+Query
+```
+
+/*Solution: This part will get month,year,count, row_num for each month-year, total rows for each-month*/
+WITH DataByMonth AS (
+    SELECT 
+        DATEPART(month, recordday) as month,
+        DATEPART(year, recordday) as year,
+        count,
+        ROW_NUMBER() OVER (PARTITION BY DATEPART(month, recordday), DATEPART(year, recordday) ORDER BY count) as row_num,
+        COUNT(*) OVER (PARTITION BY DATEPART(month, recordday), DATEPART(year, recordday)) as total_rows
+    FROM traffic
+    WHERE DATEPART(year, recordday) IN (2017, 2018)
+)
+/*second part will get month,year in cloumns, find median value for each month-year using 
+where condition applied on row_num and total_rows*/
+SELECT 
+    DataByMonth.month,
+    AVG(CASE WHEN DataByMonth.year = 2017 THEN DataByMonth.count END) as median_2017,
+    AVG(CASE WHEN DataByMonth.year = 2018 THEN DataByMonth.count END) as median_2018
+FROM DataByMonth
+WHERE (DataByMonth.row_num - 1) * 2 <= DataByMonth.total_rows AND DataByMonth.row_num * 2 >= DataByMonth.total_rows
+GROUP BY DataByMonth.month
+ORDER BY DataByMonth.month;
+```
+
 ![image](https://user-images.githubusercontent.com/50954720/213552658-29b424fe-55a2-4f69-bf42-3f21be3c2e93.png)
 
 
